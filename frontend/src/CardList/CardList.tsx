@@ -1,13 +1,14 @@
 import React from "react";
-import Card from "../Components/Card/Card";
+import Card from "../Components/Card";
 import type { CompanySearch } from "../company";
 import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   searchResult: CompanySearch[];
+  onPortfolioCreate: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const CardList = ({ searchResult }: Props) => {
+const CardList = ({ searchResult, onPortfolioCreate }: Props) => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
       {searchResult.length > 0 ? (
@@ -16,7 +17,8 @@ const CardList = ({ searchResult }: Props) => {
             <Card
               searchResult={result}
               id={result.symbol}
-              key={uuidv4()} // optional: use result.symbol for stable key
+              key={uuidv4()}
+              onPortfolioCreate={onPortfolioCreate}
             />
           ))}
         </div>

@@ -1,27 +1,36 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, type SyntheticEvent } from "react";
 import "./App.css";
 import CardList from "./CardList/CardList";
-import Search from "./Components/Search/Search";
+import Search from "./Components/Search";
 import type { CompanySearch } from "./company";
 import { searchCompanies } from "./api";
-import { set } from "mongoose";
+import PortfolioList from "./Components/Portfolio/PortfolioList";
 
 function App() {
   const [search, setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string>();
+  const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     console.log(e);
     console.log(search);
   };
 
-  const handleOnClick = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const onPortfolioCreate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const exists = portfolioValues.find((value) => value === search);
+    if (exists) {
+      return;
+    }
+    const updatedPortfolioValues = [...portfolioValues, search];
+    setPortfolioValues(updatedPortfolioValues);
+    console.log("the updated portfolio values are", updatedPortfolioValues);
+  };
+
+  const onSearchSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
     if (!search || search.trim() === "") {
       setServerError("Please enter a search term.");
       return;
@@ -40,12 +49,16 @@ function App() {
   return (
     <>
       <Search
-        handleOnClick={handleOnClick}
+        onSearchSubmit={onSearchSubmit}
         search={search}
-        handleChange={handleChange}
+        onSearchChange={onSearchChange}
       />
       {serverError && <h1>{serverError}</h1>}
-      <CardList searchResult={searchResult} />
+      <PortfolioList portfolioValues={portfolioValues} />
+      <CardList
+        searchResult={searchResult}
+        onPortfolioCreate={onPortfolioCreate}
+      />
     </>
   );
 }

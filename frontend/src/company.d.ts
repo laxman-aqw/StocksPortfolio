@@ -1,4 +1,6 @@
 export interface CompanySearch {
+  exchangeFullName: ReactNode;
+  exchange: ReactNode;
   currency: string;
   exchangeShortName: string;
   name: string;
