@@ -1,6 +1,7 @@
 import React from "react";
 import type { CompanySearch } from "../company";
 import AddPortfolio from "./Portfolio/AddPortfolio";
+import { Link } from "react-router-dom";
 
 interface Props {
   id: string;
@@ -10,22 +11,30 @@ interface Props {
 
 const Card = ({ id, searchResult, onPortfolioCreate }: Props) => {
   return (
-    <div className="bg-white rounded-2xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition-all duration-300">
-      <div className="mb-2">
-        <h2 className="text-xl font-semibold text-indigo-600">
+    <div className="bg-gray-800 rounded-2xl shadow-md border border-gray-700 p-5 hover:shadow-lg   flex items-center justify-between space-x-6">
+      {/* Left info section */}
+      <div className="flex-1 min-w-0">
+        <Link
+          to={`/company/${searchResult.symbol}`}
+          className="text-xl font-semibold text-indigo-400 hover:underline truncate"
+        >
           {searchResult.name}
-        </h2>
-        <p className="text-sm text-gray-500">{searchResult.symbol}</p>
+        </Link>
+        <p className="text-sm text-gray-400 truncate">{searchResult.symbol}</p>
+        <div className="flex space-x-4 mt-2 text-sm text-gray-300">
+          <p>
+            <span className="font-semibold text-gray-200">Currency:</span>{" "}
+            {searchResult.currency}
+          </p>
+          <p>
+            <span className="font-semibold text-gray-200">Exchange:</span>{" "}
+            {searchResult.exchangeFullName} ({searchResult.exchange})
+          </p>
+        </div>
       </div>
-      <div className="space-y-1 text-sm text-gray-700">
-        <p>
-          <span className="font-medium text-gray-900">Currency:</span>{" "}
-          {searchResult.currency}
-        </p>
-        <p>
-          <span className="font-medium text-gray-900">Exchange:</span>{" "}
-          {searchResult.exchangeFullName} ({searchResult.exchange})
-        </p>
+
+      {/* Right button section */}
+      <div>
         <AddPortfolio
           onPortfolioCreate={onPortfolioCreate}
           symbol={searchResult.symbol}

@@ -1,1 +1,9 @@
 @import "tailwindcss";
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke,
+    box-shadow, transform, opacity;
+  transition-duration: 3s;
+  transition-timing-function: ease-in-out;
+}
