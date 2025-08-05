@@ -10,7 +10,17 @@ function App() {
   const [search, setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError, setServerError] = useState<string>();
+
   const [portfolioValues, setPortfolioValues] = useState<string[]>([]);
+
+  const onPortfolioDelete = (e: any) => {
+    e.preventDefault();
+    console.log(e);
+    const removed = portfolioValues.filter(
+      (value) => value !== e.target[0].value
+    );
+    setPortfolioValues(removed);
+  };
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -54,7 +64,10 @@ function App() {
         onSearchChange={onSearchChange}
       />
       {serverError && <h1>{serverError}</h1>}
-      <PortfolioList portfolioValues={portfolioValues} />
+      <PortfolioList
+        portfolioValues={portfolioValues}
+        onPortfolioDelete={onPortfolioDelete}
+      />
       <CardList
         searchResult={searchResult}
         onPortfolioCreate={onPortfolioCreate}
